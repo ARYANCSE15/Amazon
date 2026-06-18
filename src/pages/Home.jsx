@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-
+import { useState } from "react"
 import { toast } from "react-toastify"
 
 import Navbar from "../components/Navbar"
@@ -8,113 +7,63 @@ import Footer from "../components/Footer"
 
 import products from "../data/products"
 
-import banner1 from "../assets/images/banner1.jpeg"
-import banner2 from "../assets/images/banner2.jpeg"
-import banner3 from "../assets/images/banner3.jpeg"
-import banner4 from "../assets/images/banner4.jpeg"
-import banner5 from "../assets/images/banner5.jpeg"
+import "./Home.css"
 
 function Home() {
+  const [search, setSearch] = useState("")
 
-    const [search, setSearch] = useState("")
-
-    const [slide, setSlide] = useState(0)
-
-    const banners = [
-        banner1,
-        banner2,
-        banner3,
-        banner4,
-        banner5
-    ]
-
-    useEffect(() => {
-
-        const interval = setInterval(() => {
-
-            setSlide(prev => (prev + 1) % banners.length)
-
-        }, 2500)
-
-        return () => clearInterval(interval)
-
-    }, [])
-
-    function addToCart(id) {
-
-        let user = localStorage.getItem("user")
-
-        if (!user) {
-
-            toast.error("Please login first!")
-
-            return
-        }
-
-        let cart = JSON.parse(localStorage.getItem("cart")) || []
-
-        let product = products.find(p => p.id === id)
-
-        let existing = cart.find(item => item.id === id)
-
-        if (existing) {
-
-            existing.qty += 1
-
-        } else {
-
-            product.qty = 1
-
-            cart.push(product)
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cart))
-
-        toast.success("Added To Cart")
-
-        window.location.reload()
+  function addToCart(id) {
+    let user = localStorage.getItem("user")
+    if (!user) {
+      toast.error("Please login first!")
+      return
     }
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(search.toLowerCase())
-    )
+    let cart = JSON.parse(localStorage.getItem("cart")) || []
+    let product = products.find(p => p.id === id)
+    let existing = cart.find(item => item.id === id)
 
-    return (
+    if (existing) {
+      existing.qty += 1
+    } else {
+      product.qty = 1
+      cart.push(product)
+    }
 
-        <>
+    localStorage.setItem("cart", JSON.stringify(cart))
+    toast.success("Added To Cart")
+    window.location.reload()
+  }
 
-            <Navbar
-                search={search}
-                setSearch={setSearch}
-            />
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  )
 
-            <div className="slider">
+  return (
+    <>
+      <Navbar search={search} setSearch={setSearch} />
 
-                <img
-                    src={banners[slide]}
-                    alt="Banner"
-                />
+      {}
+      <div className="slider">
+        <img 
+          src="https://assets.hardwarezone.com/img/2023/06/Amazon_Fresh_for_all.jpg" 
+          alt="Amazon Fresh Banner" 
+        />
+      </div>
 
-            </div>
+      <section className="products">
+        {filteredProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          />
+        ))}
+      </section>
 
-            <section className="products">
-
-                {filteredProducts.map(product => (
-
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                        addToCart={addToCart}
-                    />
-
-                ))}
-
-            </section>
-
-            <Footer />
-
-        </>
-    )
+      <Footer />
+    </>
+  )
 }
 
 export default Home
