@@ -45,7 +45,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <img src="/src/assets/images/logo2.png" alt="Amazon" />
-        <p>© 2026 Amazon Clone | Made by Arpit</p>
+        <p>© 2026 Amazon Clone | Made by Aryan</p>
       </div>
     </footer>
   )

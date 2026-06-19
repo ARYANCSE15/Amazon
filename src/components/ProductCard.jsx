@@ -18,11 +18,11 @@ function ProductCard({ product, addToCart }) {
 
                 <div>
 
-                    <h3 className="fw-bold text-2xl mb-3">
+                    <h3 className="name">
                         {product.name}
                     </h3>
 
-                    <p className="text-success fw-bold fs-4">
+                    <p className="price">
                         ₹{product.price}
                     </p>
 
@@ -32,17 +32,10 @@ function ProductCard({ product, addToCart }) {
 
                     <button
                         onClick={() => addToCart(product.id)}
-                        className="btn btn-warning rounded-pill fw-bold py-2"
+                        className="cartadd"
                     >
                         Add To Cart
                     </button>
-
-                    <Link
-                        to={`/product/${product.id}`}
-                        className="btn btn-dark rounded-pill fw-bold py-2"
-                    >
-                        View Product
-                    </Link>
 
                 </div>
 
